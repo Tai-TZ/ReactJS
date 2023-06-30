@@ -22,8 +22,8 @@ class UserManage extends Component {
             arrUsers: response.users
         })
     }
-    // console.log('get data from BE',response);
-  }
+    // console.log('get data from BE',response);   
+  } 
 
   render() {
     let arrUsers = this.state.arrUsers
