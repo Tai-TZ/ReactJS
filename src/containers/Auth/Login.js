@@ -5,6 +5,7 @@ import { push } from "connected-react-router";
 import * as actions from "../../store/actions";
 import './Login.scss';
 import { FormattedMessage } from 'react-intl';
+import { handleLoginApi } from '../../services/userService';
 
 
 class Login extends Component {
@@ -15,6 +16,7 @@ class Login extends Component {
             username: '',// giá trị khởi tạo ban đầu
             password: '',
             isShowPassword: false,
+            errMessage: ''
         }
     }
 
@@ -31,19 +33,44 @@ class Login extends Component {
         });
     }
 
-    //xữ lý login
-    handleLogin = () => {
-        console.log('username:', this.state.username, 'password:', this.state.password)
-        console.log('AllState: ', this.state);
 
+    //xữ lý login
+    handleLogin = async () => {
+        this.setState({ // mỗi lần nhấn resquet, phải clear mã lỗi đi để hiện mã lỗi khác
+            errMessage: ''
+        })
+
+        try { 
+            let data = await handleLoginApi(this.state.username, this.state.password)
+            console.log(data);
+            if (data && data.errCode !== 0) { // case check remaining error: các lỗi còn lại
+                this.setState({  
+                    errMessage: data.message
+                })
+            }
+            if (data && data.errCode == 0) { //log in success
+                this.props.userLoginSuccess(data.user) //redux lưu thông tin user
+            }
+
+
+        } catch (error) { //case check error không có user && pass
+            if (error.response) {
+                if (error.response.data) {
+                    this.setState({ //gán errMessage = text error bên server
+                        errMessage: error.response.data.message
+                    })
+                }
+            }
+            console.log(error.response);
+        }
     }
 
     //ẩn hiện passwords
-    handleShowHidePassword = () => { 
+    handleShowHidePassword = () => {
         this.setState({
             isShowPassword: !this.state.isShowPassword, //khi click vào isShowPassword == true
         })
-        
+
     }
 
 
@@ -69,14 +96,16 @@ class Login extends Component {
                             <label>Password:</label>
                             <div className='custom-input-password'>
                                 <input className='form-control' placeholder='Enter your password'
-                                    type = {this.state.isShowPassword ? 'text' : 'password'}
-                                    onChange={(event) => {this.handleOnChangePassWord(event)}} />
-                                <span onClick={()=>{this.handleShowHidePassword()}}>
-                                    <i className= {this.state.isShowPassword ? "far fa-eye": "fas fa-eye-slash"}></i> 
+                                    type={this.state.isShowPassword ? 'text' : 'password'}
+                                    onChange={(event) => { this.handleOnChangePassWord(event) }} />
+                                <span onClick={() => { this.handleShowHidePassword() }}>
+                                    <i className={this.state.isShowPassword ? "far fa-eye" : "fas fa-eye-slash"}></i>
                                 </span>
-
                             </div>
+                        </div>
 
+                        <div className='col-12' style={{ color: 'red' }}>
+                            {this.state.errMessage}
                         </div>
 
                         <div className='col-12'>
@@ -119,8 +148,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         navigate: (path) => dispatch(push(path)),
-        adminLoginSuccess: (adminInfo) => dispatch(actions.adminLoginSuccess(adminInfo)),
-        adminLoginFail: () => dispatch(actions.adminLoginFail()),
+    //    userLoginFail: () => dispatch(actions.adminLoginFail()),
+        userLoginSuccess: (userInfo) => dispatch(actions.userLoginSuccess(userInfo))
     };
 };
 
