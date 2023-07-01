@@ -1,6 +1,6 @@
 import axios from '../axios'
 
-
+// =========================== CALL API
 
 //gọi api server nodejs
 const handleLoginApi = (userEmail, userPassword) => {
@@ -15,13 +15,21 @@ const getAllUsers = (inputId) => {
 
 
 const createNewUserService = (data) => {
-    console.log('check data from service BE:', data);
+    // console.log('check data from service BE:', data);
     return axios.post('/api/create-new-user', data)
 }
 
+const deleteUserService = (userId) => {
+    return axios.delete('/api/delete-user', {
+        data: {
+            id: userId
+        }
+    })
+}
 
 export {
     handleLoginApi,
     getAllUsers,
-    createNewUserService
+    createNewUserService,
+    deleteUserService
 }
