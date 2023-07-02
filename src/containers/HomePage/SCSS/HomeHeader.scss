@@ -1,4 +1,6 @@
 // ======================== HEADER ========================
+
+// ================ HEADER TOP ================
 .home-header-container {
     height: 60px;
     width: 100%;
@@ -15,10 +17,9 @@
             width: 25%;
             display: flex;
             align-items: center;
-            background-color: red;
 
             .header-logo {
-                background: url('../../../assets/logo.svg') center center no-repeat;
+                background: url("../../../assets/logo.svg") center center no-repeat;
                 height: 100%;
                 width: 100%;
                 cursor: pointer;
@@ -34,7 +35,6 @@
         // ============= CENTER CONTENT =================
         .center-content {
             width: 50%;
-            background-color: beige;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -50,10 +50,109 @@
         // ============= RIGHT CONTENT =================
         .right-content {
             width: 25%;
-            background-color: aqua;
             display: flex;
             align-items: center;
             justify-content: center;
+        }
+    }
+}
+
+// ================ HEADER BANNER ================
+.home-header-banner {
+    background: url(../../../assets/header-background.jpg);
+    height: 485px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+
+    .content-up {
+        border: 1px solid red;
+        padding: 15px;
+        height: 50%;
+
+        .title1 {
+            text-align: center;
+            font-size: 30px;
+            color: white;
+            text-shadow: 1px 1px 1px #333;
+            margin-bottom: 5px;
+            margin-top: 25px;
+        }
+
+        .title2 {
+            text-align: center;
+            font-size: 30px;
+            color: white;
+            text-shadow: 1px 1px 1px #333;
+            margin-bottom: 15px;
+        }
+
+        .search {
+            width: fit-content;
+            padding: 10px;
+            border-radius: 25px;
+            background: #f7d800;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto;
+
+            i {
+                margin: 0 5px;
+            }
+
+            input {
+                height: 30px;
+                width: 360px;
+                background: transparent;
+                border: none;
+                outline: none;
+            }
+        }
+    }
+
+    .content-down {
+        height: 50%;
+        border: 1px solid blue;
+
+        .options {
+            display: flex;
+            text-align: center;
+            gap: 50px;
+            justify-content: center;
+
+            .option-child {
+                width: 125px;
+                text-align: center;
+                border: 1px solid red;
+                margin: 5px 10px;
+
+                .icon-child {
+                    background: white;
+                    width: 40px;
+                    height: 40px;
+                    padding: 10px;
+                    border-radius: 50%;
+                    margin: 0 auto;
+
+                    i {
+                        font-size: 20px;
+                        color: #49bce2;
+                    }
+                }
+
+                .text-child {
+                    font-size: 16px;
+                    font-weight: 500;
+
+                    &:hover {
+                        color: #49bce2;
+                        cursor: pointer;
+                    }
+                }
+            }
         }
     }
 }
