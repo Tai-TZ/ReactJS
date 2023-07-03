@@ -17,6 +17,9 @@ class HomePage extends Component {
 
 }
 
+
+//  ============================ REDUX ============================
+//truyền pros từ redux sang react như component cha sang component con
 const mapStateToProps = state => {
     return {
         isLoggedIn: state.user.isLoggedIn
@@ -28,4 +31,6 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
+
+//kết nối REDUX
 export default connect(mapStateToProps, mapDispatchToProps)(HomePage);
