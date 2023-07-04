@@ -2,9 +2,13 @@
 
 // ================ HEADER TOP ================
 .home-header-container {
-    height : 60px;
-    width  : 100%;
-    padding: 0 40px;
+    height    : 60px;
+    width     : 100%;
+    padding   : 0 40px;
+    background: white;
+    position  : sticky;
+    top       : 0;
+    z-index   : 100000000000;
 
     // ============= CONTENT =================
     .home-header-content {
