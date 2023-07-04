@@ -9,7 +9,8 @@
         "select-doctor": "Choose a good doctor",
         "fee": "Checkup package",
         "check-health": "General health check",
-        "support" : "Support"
+        "support" : "Support",
+        "welcome": "Welcome"
     },
 
 
@@ -57,7 +58,7 @@
             "system-administrator": {
                 "header": "System Administrator",
                 "user-manage": "User manage",
-                "product-manage": "Package manage",
+                "user-redux": "Manage user using redux",
                 "register-package-group-or-account": "Register service package for group/account"
             },
             "system-parameter": {

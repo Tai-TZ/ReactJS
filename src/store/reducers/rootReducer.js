@@ -1,4 +1,4 @@
-import {combineReducers} from 'redux';
+import { combineReducers } from 'redux';
 import { connectRouter } from 'connected-react-router';
 
 import appReducer from "./appReducer";
@@ -14,19 +14,26 @@ const persistCommonConfig = {
     stateReconciler: autoMergeLevel2,
 };
 
- 
 
+//tạo biến lưu vào redux đẩy lên local storage
 const userPersistConfig = {
     ...persistCommonConfig,
-    key: 'admin',
-    whitelist: ['isLoggedIn', 'userInfo']
+    key: 'admin',//tạo key
+    whitelist: ['isLoggedIn', 'userInfo']// giá trị
 };
+
+//tạo biến lưu vào redux đẩy lên local storage
+const appPersistConfig = {
+    ...persistCommonConfig,
+    key: 'app', //tạo key
+    whitelist: ['language']  // giá trị
+}
 
 
 export default (history) => combineReducers({
     router: connectRouter(history),
-    
+
     user: persistReducer(userPersistConfig, userReducer),
- 
-    app: appReducer
+
+    app: persistReducer(appPersistConfig, appReducer)
 })
