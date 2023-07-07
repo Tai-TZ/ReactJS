@@ -4,30 +4,24 @@ import { connect } from 'react-redux';
 import { getAllCodeService } from '../../../services/userService';
 import { LANGUAGES } from '../../../utils';
 import * as actions from '../../../store/actions'
+import { lang } from 'moment/moment';
 
 class UserRedux extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            genderArr: [], // viết theo kiểu crud REDUX
+            genderArr: [],
+            roleArr: [],
+            positionArr: [],
         }
     }
 
     async componentDidMount() {
+        //gọi api trong hàm redux
         this.props.getGenderStart();
-
-        // try {
-        //     let res = await getAllCodeService('gender')
-        //     if (res && res.errCode === 0) {
-        //         this.setState({
-        //             genderArr: res.data
-        //         })
-        //     }
-        //     // console.log('check gender', res)
-        // } catch (e) {
-        //     console.log(e)
-        // }
+        this.props.getPositionStart();
+        this.props.getRoleStart();
     }
 
 
@@ -35,12 +29,22 @@ class UserRedux extends Component {
     //lifecycle update react:  update state components
     componentDidUpdate(prevProps, prevState, snapshot) {
         //được gọi didupdate sau khi hàm render chạy
-        //hiện tại (this) quá khứ (previous)
-        //[] [3]
+        //so sánh quá khứ (previous) hiện tại (this)
+        // [] [3]
         // [3] [3]
         if (prevProps.genderRedux !== this.props.genderRedux) {
             this.setState({
                 genderArr: this.props.genderRedux
+            })
+        }
+        if (prevProps.roleRedux !== this.props.roleRedux) {
+            this.setState({
+                roleArr: this.props.roleRedux
+            })
+        }
+        if (prevProps.positionRedux !== this.props.positionRedux) {
+            this.setState({
+                positionArr: this.props.positionRedux
             })
         }
     }
@@ -49,9 +53,11 @@ class UserRedux extends Component {
     render() {
 
         let genders = this.state.genderArr;
-        let language = this.props.language;
+        let roles = this.state.roleArr;
+        let position = this.state.positionArr;
 
-        console.log(this.props.genderRedux)
+        let language = this.props.language;
+        let isGetGender = this.props.isLoadingGender
         return (
             <div className='user-redux-container'>
                 <div className="title" >CRUD Redux</div>
@@ -59,6 +65,7 @@ class UserRedux extends Component {
                     <div className='container'>
                         <div className='row'>
                             <div className='col-12 my-3'> <FormattedMessage id="manage-user.add" /></div>
+                            <div className='col-12'>{isGetGender === true ? 'Loading gender' : ''}</div>
                             <div className='col-3'>
                                 <lable><FormattedMessage id="manage-user.email" /></lable>
                                 <input className='form-control' type='email' />
@@ -106,14 +113,30 @@ class UserRedux extends Component {
 
                             <div className='col-3'>
                                 <lable><FormattedMessage id="manage-user.position" /></lable>
-                                <input className='form-control' type='text' />
+                                <select className='form-control'>
+                                    {position && position.length > 0 && position.map((item, index) => {
+                                        return (
+                                            <option key={index}>
+                                                {language === LANGUAGES.VI ? item.valueVi : item.valueEn}
+                                            </option>
+                                        )
+                                    })}
+                                </select>
                             </div>
 
                             <div className='col-3'>
                                 <lable><FormattedMessage id="manage-user.role" /></lable>
                                 <select className='form-control' >
-                                    <option selected>Choose...</option>
-                                    <option >...</option>
+                                    {roles && roles.length > 0 && roles.map((item, index) => {
+                                        return (
+                                            < option key={index}>
+                                                {language === LANGUAGES.VI ? item.valueVi : item.valueEn}
+
+                                            </option>
+                                        )
+                                    })}
+
+
                                 </select>
                             </div>
 
@@ -135,11 +158,15 @@ class UserRedux extends Component {
 
 }
 
-const mapStateToProps = state => { //lôi data redux vào react  
+
+//state của REDUX
+const mapStateToProps = state => { //lôi data redux vào react   
     return {
         language: state.app.language,
         genderRedux: state.admin.genders,
-
+        roleRedux: state.admin.roles,
+        positionRedux: state.admin.positions,
+        isLoadingGender: state.admin.isLoadingGender
 
     };
 
@@ -148,7 +175,11 @@ const mapStateToProps = state => { //lôi data redux vào react
 const mapDispatchToProps = dispatch => { //fire 1 action(event) của redux
     return {
         //key                  // value
-        getGenderStart: () => dispatch(actions.fetchGenderStart())
+        getGenderStart: () => dispatch(actions.fetchGenderStart()),
+        getPositionStart: () => dispatch(actions.fetchPositionStart()),
+        getRoleStart: () => dispatch(actions.fetchRoleStart()),
+
+
     };
 };
 
