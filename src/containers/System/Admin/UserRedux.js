@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
-import { getAllCodeService } from '../../../services/userService';
 import { LANGUAGES } from '../../../utils';
 import * as actions from '../../../store/actions'
-import { lang } from 'moment/moment';
+import './UserRedux.scss'
+
+//thự viện preview img
+import Lightbox from 'react-image-lightbox';
+import 'react-image-lightbox/style.css'; // This only needs to be imported once in your app
 
 class UserRedux extends Component {
 
@@ -14,6 +17,8 @@ class UserRedux extends Component {
             genderArr: [],
             roleArr: [],
             positionArr: [],
+            previewImgURL: '',
+            isOpen: false,
         }
     }
 
@@ -49,6 +54,26 @@ class UserRedux extends Component {
         }
     }
 
+
+    //xử lý xem trước Image
+    handleOnchangeImage = (event) => {
+        let data = event.target.files;
+        let file = data[0]
+        if (file) {
+            let objectUrl = URL.createObjectURL(file) //tạo ra đường link url 
+            this.setState({
+                previewImgURL: objectUrl
+            })
+        }
+
+    }
+    openPreviewImage = () => {
+        if (!this.state.previewImgURL) return //check nếu k có previewImgURL thì ko phóng to, tránh bug
+
+        this.setState({
+            isOpen: true
+        })
+    }
 
     render() {
 
@@ -142,7 +167,18 @@ class UserRedux extends Component {
 
                             <div className='col-3'>
                                 <lable><FormattedMessage id="manage-user.image" /></lable>
-                                <input className='form-control' type='text' />
+                                <div className='preview-img-container'>
+                                    <input id="previewImg" type='file' hidden
+                                        onChange={(event) => this.handleOnchangeImage(event)}
+                                    />
+                                    <label className="label-upload" htmlFor='previewImg'> Tải ảnh <i className="fas fa-upload"></i> </label>
+                                    <div className='preview-image'
+                                        style={{ backgroundImage: `url(${this.state.previewImgURL})` }}
+                                        onClick={() => this.openPreviewImage()} >
+
+
+                                    </div>
+                                </div>
                             </div>
 
                             <div className='col-3 mt-3'>
@@ -152,6 +188,13 @@ class UserRedux extends Component {
                         </div>
                     </div>
                 </div>
+
+                {/* Thư viện preview img */}
+                {this.state.isOpen == true &&
+                    <Lightbox
+                        mainSrc={this.state.previewImgURL}
+                        onCloseRequest={() => this.setState({ isOpen: false })} />
+                }
             </div>
         )
     }
