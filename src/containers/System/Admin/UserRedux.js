@@ -19,6 +19,19 @@ class UserRedux extends Component {
             positionArr: [],
             previewImgURL: '',
             isOpen: false,
+
+            //user infor
+            email: '',
+            password: '',
+            firstName: '',
+            lastName: '',
+            phoneNumber: '',
+            address: '',
+            gender: '',
+            position: '',
+            role: '',
+            avatar: '',
+
         }
     }
 
@@ -30,7 +43,6 @@ class UserRedux extends Component {
     }
 
 
-
     //lifecycle update react:  update state components
     componentDidUpdate(prevProps, prevState, snapshot) {
         //được gọi didupdate sau khi hàm render chạy
@@ -38,18 +50,24 @@ class UserRedux extends Component {
         // [] [3]
         // [3] [3]
         if (prevProps.genderRedux !== this.props.genderRedux) {
+            let arrGenders = this.props.genderRedux
             this.setState({
-                genderArr: this.props.genderRedux
+                genderArr: arrGenders,
+                gender: arrGenders && arrGenders.length > 0 ? arrGenders[0].key : '', //set default value
             })
         }
         if (prevProps.roleRedux !== this.props.roleRedux) {
+            let arrRoles = this.props.roleRedux
             this.setState({
-                roleArr: this.props.roleRedux
+                roleArr: arrRoles,
+                role: arrRoles && arrRoles.length > 0 ? arrRoles[0].key : ''//set default value
             })
         }
         if (prevProps.positionRedux !== this.props.positionRedux) {
+            let arrPositons = this.props.positionRedux
             this.setState({
-                positionArr: this.props.positionRedux
+                positionArr: arrPositons,
+                position: arrPositons && arrPositons.length > 0 ? arrPositons[0].key : ''//set default value
             })
         }
     }
@@ -57,12 +75,13 @@ class UserRedux extends Component {
 
     //xử lý xem trước Image
     handleOnchangeImage = (event) => {
-        let data = event.target.files;
+        let data = event.target.files; //
         let file = data[0]
         if (file) {
             let objectUrl = URL.createObjectURL(file) //tạo ra đường link url 
             this.setState({
-                previewImgURL: objectUrl
+                previewImgURL: objectUrl,
+                avatar: file
             })
         }
 
@@ -75,14 +94,64 @@ class UserRedux extends Component {
         })
     }
 
+
+    //xử lý btn lưu user 
+    handleSaveUser = () => {
+        let isValid = this.checkValidateInput()
+        if (isValid === false) return
+
+        //fire redux action event
+        this.props.createNewUser({
+            email: this.state.email,
+            password: this.state.password,
+            firstName: this.state.firstName,
+            lastName: this.state.lastName,
+            address: this.state.address,
+            phonenumber: this.state.phoneNumber,
+            gender: this.state.gender,
+            roleId: this.state.role,
+            positionId: this.state.position,
+        })
+
+
+    }
+    onchangeInput = (event, id) => {
+        let copyState = { ...this.state }
+
+        copyState[id] = event.target.value //lấy giá trị của các input
+        this.setState({
+            ...copyState
+        })
+    }
+
+
+    //xử lý validates
+    checkValidateInput = () => {
+        let isValid = true
+        let arrCheck = ["email", "password", "firstName", "lastName", "phoneNumber", "address"]
+
+        for (let i = 0; i < arrCheck.length; i++) {
+            if (!this.state[arrCheck[i]]) { //check trường hợp không có value 
+                isValid = false;
+                alert("This input is required: " + arrCheck[i])
+                break;
+            }
+        }
+
+        return isValid;
+    }
+
     render() {
 
         let genders = this.state.genderArr;
         let roles = this.state.roleArr;
-        let position = this.state.positionArr;
-
+        let positions = this.state.positionArr;
         let language = this.props.language;
         let isGetGender = this.props.isLoadingGender
+
+
+        let { email, password, firstName, lastName, phoneNumber, address, gender, position, role, avatar } = this.state;
+
         return (
             <div className='user-redux-container'>
                 <div className="title" >CRUD Redux</div>
@@ -93,41 +162,49 @@ class UserRedux extends Component {
                             <div className='col-12'>{isGetGender === true ? 'Loading gender' : ''}</div>
                             <div className='col-3'>
                                 <lable><FormattedMessage id="manage-user.email" /></lable>
-                                <input className='form-control' type='email' />
+                                <input className='form-control' type='email'
+                                    value={email} onChange={(event) => { this.onchangeInput(event, 'email') }}
+                                />
                             </div>
 
                             <div className='col-3'>
                                 <lable><FormattedMessage id="manage-user.password" /></lable>
-                                <input className='form-control' type='password' />
+                                <input className='form-control' type='password'
+                                    value={password} onChange={(event) => { this.onchangeInput(event, "password") }} />
                             </div>
 
                             <div className='col-3'>
                                 <lable><FormattedMessage id="manage-user.first-name" /></lable>
-                                <input className='form-control' type='text' />
+                                <input className='form-control' type='text' value={firstName}
+                                    onChange={(event) => { this.onchangeInput(event, "firstName") }} />
                             </div>
 
                             <div className='col-3'>
                                 <lable><FormattedMessage id="manage-user.last-name" /></lable>
-                                <input className='form-control' type='text' />
+                                <input className='form-control' type='text' value={lastName}
+                                    onChange={(event) => { this.onchangeInput(event, "lastName") }} />
                             </div>
 
                             <div className='col-3'>
                                 <lable><FormattedMessage id="manage-user.phone-number" /></lable>
-                                <input className='form-control' type='text' />
+                                <input className='form-control' type='text' value={phoneNumber}
+                                    onChange={(event) => { this.onchangeInput(event, "phoneNumber") }} />
                             </div>
 
                             <div className='col-9'>
                                 <lable><FormattedMessage id="manage-user.address" /></lable>
-                                <input className='form-control' type='text' />
+                                <input className='form-control' type='text' value={address}
+                                    onChange={(event) => { this.onchangeInput(event, "address") }} />
                             </div>
 
                             <div className='col-3'>
                                 <lable><FormattedMessage id="manage-user.gender" /></lable>
-                                <select className='form-control' >
+                                <select className='form-control'
+                                    onChange={(event) => { this.onchangeInput(event, 'gender') }}>
                                     {/*Điều kiện*/}
                                     {genders && genders.length > 0 && genders.map((item, index) => {
                                         return (
-                                            <option key={index}>
+                                            <option key={index} value={item.key}>
                                                 {/* Check language để đổi EN-VI */}
                                                 {language === LANGUAGES.VI ? item.valueVi : item.valueEn}
                                             </option>
@@ -138,10 +215,11 @@ class UserRedux extends Component {
 
                             <div className='col-3'>
                                 <lable><FormattedMessage id="manage-user.position" /></lable>
-                                <select className='form-control'>
-                                    {position && position.length > 0 && position.map((item, index) => {
+                                <select className='form-control'
+                                    onChange={(event) => { this.onchangeInput(event, 'position') }}>
+                                    {positions && positions.length > 0 && positions.map((item, index) => {
                                         return (
-                                            <option key={index}>
+                                            <option key={index} value={item.key}>
                                                 {language === LANGUAGES.VI ? item.valueVi : item.valueEn}
                                             </option>
                                         )
@@ -151,12 +229,12 @@ class UserRedux extends Component {
 
                             <div className='col-3'>
                                 <lable><FormattedMessage id="manage-user.role" /></lable>
-                                <select className='form-control' >
+                                <select className='form-control'
+                                    onChange={(event) => { this.onchangeInput(event, 'role') }}>
                                     {roles && roles.length > 0 && roles.map((item, index) => {
                                         return (
-                                            < option key={index}>
+                                            < option key={index} value={item.key} >
                                                 {language === LANGUAGES.VI ? item.valueVi : item.valueEn}
-
                                             </option>
                                         )
                                     })}
@@ -182,7 +260,9 @@ class UserRedux extends Component {
                             </div>
 
                             <div className='col-3 mt-3'>
-                                <button className='btn btn-primary'><FormattedMessage id="manage-user.save" /></button>
+                                <button className='btn btn-primary'
+                                    onClick={() => this.handleSaveUser()}
+                                ><FormattedMessage id="manage-user.save" /></button>
 
                             </div>
                         </div>
@@ -202,7 +282,7 @@ class UserRedux extends Component {
 }
 
 
-//state của REDUX
+//map state của REDUX vào react
 const mapStateToProps = state => { //lôi data redux vào react   
     return {
         language: state.app.language,
@@ -215,12 +295,18 @@ const mapStateToProps = state => { //lôi data redux vào react
 
 };
 
+
+//map dispatch vào props của react
 const mapDispatchToProps = dispatch => { //fire 1 action(event) của redux
     return {
         //key                  // value
         getGenderStart: () => dispatch(actions.fetchGenderStart()),
         getPositionStart: () => dispatch(actions.fetchPositionStart()),
         getRoleStart: () => dispatch(actions.fetchRoleStart()),
+
+
+        //create new user 
+        createNewUser: (data) => dispatch(actions.createNewUser(data)),
 
 
     };

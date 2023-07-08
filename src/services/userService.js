@@ -15,7 +15,7 @@ const getAllUsers = (inputId) => {
 
 //gọi api CREATE a new user
 const createNewUserService = (data) => {
-    // console.log('check data from service BE:', data);
+    console.log('check data from service BE:', data);
     return axios.post('/api/create-new-user', data)
 }
 
