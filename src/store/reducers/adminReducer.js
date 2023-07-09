@@ -5,6 +5,7 @@ const initialState = { //khai báo biến khởi tạo
     roles: [],
     positions: [],
     isLoadingGender: false,
+    users: [],
 }
 
 
@@ -55,6 +56,18 @@ const adminReducer = (state = initialState, action) => {
             state.roles = []
             return {
                 ...state,
+            }
+
+
+        case actionTypes.FETCH_ALL_USERS_SUCCESS:
+            state.users = action.users//lưu data vào redux   
+            return {
+                ...state
+            }
+        case actionTypes.FETCH_ALL_USERS_FAILED:
+            state.users = []
+            return {
+                ...state
             }
         default:
             return state;

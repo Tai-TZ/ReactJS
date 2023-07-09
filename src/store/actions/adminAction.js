@@ -1,6 +1,6 @@
 import actionTypes from './actionTypes';
-import { getAllCodeService, createNewUserService } from '../../services/userService';
-
+import { getAllCodeService, createNewUserService, getAllUsers, deleteUserService, editUserService } from '../../services/userService';
+import { toast } from 'react-toastify';
 
 // ======================================================= ACTION GENDER
 //cách 1
@@ -88,11 +88,14 @@ export const createNewUser = (data) => {
     return async (dispatch, getState) => {
         try {
             let res = await createNewUserService(data)
-            console.log("check res created: ", res)
+            // console.log("check res created: ", res)
             if (res && res.errCode === 0) {
+                toast.success("Create a new user successfully")
                 dispatch(saveUserSuccess())
+                dispatch(fetchAllUsersStart()) //create xong gọi hàm này để load all users
             }
             else {
+                toast.success(res.errMessage)
                 dispatch(saveUserFailed())
             }
         } catch (e) {
@@ -109,6 +112,101 @@ export const saveUserSuccess = () => ({
 
 export const saveUserFailed = () => ({
     type: actionTypes.CREATE_USER_FAILED
+})
+
+
+// ======================================================= GET ALL USERS  
+export const fetchAllUsersStart = () => {
+    return async (dispatch, getState) => {
+        try {
+
+            let res = await getAllUsers("ALL")
+            if (res && res.errCode === 0) {
+
+                dispatch(fetchAllUsersSuccess(res.users.reverse()))
+            } else {
+                toast.success("Fetch all user Error !!!")
+                dispatch(fetchAllUsersFailed());
+            }
+        } catch (e) {
+            toast.success("Fetch all user Error !!!")
+            dispatch(fetchAllUsersFailed());
+            console.log('fetchAllUsersStart error: ', e)
+        }
+    }
+}
+export const fetchAllUsersSuccess = (data) => ({
+    type: actionTypes.FETCH_ALL_USERS_SUCCESS,
+    users: data
+})
+export const fetchAllUsersFailed = () => ({
+    type: actionTypes.FETCH_ALL_USERS_FAILED
+})
+
+
+// ======================================================= DELETE USER
+export const deleteAUser = (userId) => {
+    return async (dispatch, getState) => {
+        try {
+            let res = await deleteUserService(userId)
+            // console.log("check res created: ", res)
+            if (res && res.errCode === 0) {
+                toast.success(res.message)
+                dispatch(deleteUserSuccess())
+                dispatch(fetchAllUsersStart()) //delete xong gọi hàm này để load all users
+            }
+            else {
+                toast.success("Delete a user Failed !!!")
+                dispatch(deleteUserFailed())
+            }
+        } catch (e) {
+            dispatch(deleteUserFailed())
+            toast.success("Delete a user Failed !!!")
+            console.log('Delete user error: ', e)
+        }
+    }
+}
+
+export const deleteUserSuccess = () => ({
+    type: actionTypes.DELETE_USERS_SUCCESS
+})
+
+
+export const deleteUserFailed = () => ({
+    type: actionTypes.DELETE_USERS_FAILED
+})
+
+
+// ======================================================= EDIT USER
+export const EditAUser = (data) => {
+    return async (dispatch, getState) => {
+        try {
+            let res = await editUserService(data)
+            // console.log("check res created: ", res)
+            if (res && res.errCode === 0) {
+                toast.success(res.message)
+                dispatch(EditUserSuccess())
+                dispatch(fetchAllUsersStart()) //delete xong gọi hàm này để load all users
+            }
+            else {
+                toast.success("Update a user Failed !!!")
+                dispatch(EditUserFailed())
+            }
+        } catch (e) {
+            dispatch(EditUserFailed())
+            toast.success("Update a user Failed !!!")
+            console.log('Update user error: ', e)
+        }
+    }
+}
+
+export const EditUserSuccess = () => ({
+    type: actionTypes.EDIT_USERS_SUCCESS
+})
+
+
+export const EditUserFailed = () => ({
+    type: actionTypes.EDIT_USERS_FAILED
 })
 
 
