@@ -85,6 +85,7 @@ export const fetchRoleFailed = () => ({
 
 // ======================================================= CREATE NEW USER
 export const createNewUser = (data) => {
+    console.log('check data create:', data)
     return async (dispatch, getState) => {
         try {
             let res = await createNewUserService(data)

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
-import { LANGUAGES, CRUD_ACTIONS } from '../../../utils';
+import { LANGUAGES, CRUD_ACTIONS, CommonUtils } from '../../../utils';
 import * as actions from '../../../store/actions'
 import './UserRedux.scss'
 import TableManageUser from './TableManageUser';
@@ -91,6 +91,7 @@ class UserRedux extends Component {
                 role: arrRoles && arrRoles.length > 0 ? arrRoles[0].key : '',//set default value
                 position: arrPositons && arrPositons.length > 0 ? arrPositons[0].key : '',//set default value
                 avatar: '',
+                previewImgURL: '',
                 action: CRUD_ACTIONS.CREATE
             })
         }
@@ -98,14 +99,16 @@ class UserRedux extends Component {
 
 
     //xử lý xem trước Image
-    handleOnchangeImage = (event) => {
-        let data = event.target.files; //
+    handleOnchangeImage = async (event) => {
+        let data = event.target.files; //lấy files
         let file = data[0]
         if (file) {
+            let base64 = await CommonUtils.getBase64(file) //đổi qua chuỗi Base64 
             let objectUrl = URL.createObjectURL(file) //tạo ra đường link url 
+            // console.log('check base64:', base64)
             this.setState({
                 previewImgURL: objectUrl,
-                avatar: file
+                avatar: base64
             })
         }
 
@@ -128,6 +131,7 @@ class UserRedux extends Component {
             ...copyState
         })
     }
+
     handleSaveUser = () => {
         let isValid = this.checkValidateInput()
         if (isValid === false) return
@@ -146,6 +150,7 @@ class UserRedux extends Component {
                 gender: this.state.gender,
                 roleId: this.state.role,
                 positionId: this.state.position,
+                avatar: this.state.avatar
             })
         }
         if (action === CRUD_ACTIONS.EDIT) {
@@ -161,7 +166,8 @@ class UserRedux extends Component {
                 gender: this.state.gender,
                 roleId: this.state.role,
                 positionId: this.state.position,
-                // avatar:''
+                avatar: this.state.avatar
+
             })
         }
     }
@@ -186,7 +192,14 @@ class UserRedux extends Component {
 
     //xử lý edit user lấy data từ child table
     handleEditUserFromParent = (user) => {
-        // console.log('handleEditUserFromParent', user)
+        let imageBase64 = ''
+        if (user.image) {
+            //convert ảnh của user lấy từ db lên chuyển buffer -> base64
+            imageBase64 = new Buffer(user.image, 'base64').toString('binary')
+        }
+
+
+        //lôi từ table lên field input
         this.setState({
             email: user.email,
             password: 'hard code',
@@ -198,6 +211,7 @@ class UserRedux extends Component {
             role: user.roleId,
             position: user.positionId,
             avatar: '',
+            previewImgURL: imageBase64, //gán lại để preview 
             action: CRUD_ACTIONS.EDIT,
             userEditId: user.id
         })
