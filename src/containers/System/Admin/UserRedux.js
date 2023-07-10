@@ -53,33 +53,35 @@ class UserRedux extends Component {
         //so sánh quá khứ (previous) hiện tại (this)
         // [] [3]
         // [3] [3]
+
         if (prevProps.genderRedux !== this.props.genderRedux) {
             let arrGenders = this.props.genderRedux
             this.setState({
                 genderArr: arrGenders,
-                gender: arrGenders && arrGenders.length > 0 ? arrGenders[0].key : '', //set default value
+                gender: arrGenders && arrGenders.length > 0 ? arrGenders[0].keyMap : '', //set default value
             })
         }
         if (prevProps.roleRedux !== this.props.roleRedux) {
             let arrRoles = this.props.roleRedux
             this.setState({
                 roleArr: arrRoles,
-                role: arrRoles && arrRoles.length > 0 ? arrRoles[0].key : ''//set default value
+                role: arrRoles && arrRoles.length > 0 ? arrRoles[0].keyMap : ''//set default value
             })
         }
         if (prevProps.positionRedux !== this.props.positionRedux) {
-            let arrPositons = this.props.positionRedux
+            let arrPositions = this.props.positionRedux
             this.setState({
-                positionArr: arrPositons,
-                position: arrPositons && arrPositons.length > 0 ? arrPositons[0].key : ''//set default value
+                positionArr: arrPositions,
+                position: arrPositions && arrPositions.length > 0 ? arrPositions[0].keyMap : ''//set default value
             })
         }
 
         //clear fields input
         if (prevProps.listUsers !== this.props.listUsers) {
-            let arrGenders = this.props.genderRedux
-            let arrRoles = this.props.roleRedux
-            let arrPositons = this.props.positionRedux
+            let arrGenders = this.props.genderRedux;
+            let arrRoles = this.props.roleRedux;
+            let arrPositions = this.props.positionRedux;
+
             this.setState({
                 email: '',
                 password: '',
@@ -87,14 +89,15 @@ class UserRedux extends Component {
                 lastName: '',
                 phoneNumber: '',
                 address: '',
-                gender: arrGenders && arrGenders.length > 0 ? arrGenders[0].key : '', //set default value
-                role: arrRoles && arrRoles.length > 0 ? arrRoles[0].key : '',//set default value
-                position: arrPositons && arrPositons.length > 0 ? arrPositons[0].key : '',//set default value
+                gender: arrGenders && arrGenders.length > 0 ? arrGenders[0].keyMap : '',
+                role: arrRoles && arrRoles.length > 0 ? arrRoles[0].keyMap : '',
+                position: arrPositions && arrPositions.length > 0 ? arrPositions[0].keyMap : '',
                 avatar: '',
                 previewImgURL: '',
                 action: CRUD_ACTIONS.CREATE
-            })
+            });
         }
+
     }
 
 
@@ -136,7 +139,6 @@ class UserRedux extends Component {
         let isValid = this.checkValidateInput()
         if (isValid === false) return
         let { action } = this.state
-        console.log(action)
 
         if (action === CRUD_ACTIONS.CREATE) {
             //fire redux action event create user
@@ -225,7 +227,7 @@ class UserRedux extends Component {
         let language = this.props.language;
         let isGetGender = this.props.isLoadingGender
         let { email, password, firstName, lastName, phoneNumber, address, gender, position, role, avatar } = this.state;
-
+        // console.log('check thisstate', this.state)
         return (
             <div className='user-redux-container'>
                 <div className="title" >CRUD Redux</div>
@@ -276,47 +278,57 @@ class UserRedux extends Component {
 
                             <div className='col-3'>
                                 <lable><FormattedMessage id="manage-user.gender" /></lable>
-                                <select className='form-control' value={gender}
-                                    onChange={(event) => { this.onchangeInput(event, 'gender') }}>
+                                <select className='form-control'
+                                    onChange={(event) => { this.onchangeInput(event, 'gender') }}
+                                    value={gender}
+                                >
                                     {/*Điều kiện*/}
-                                    {genders && genders.length > 0 && genders.map((item, index) => {
-                                        return (
-                                            <option key={index} value={item.key}>
-                                                {/* Check language để đổi EN-VI */}
-                                                {language === LANGUAGES.VI ? item.valueVi : item.valueEn}
-                                            </option>
-                                        )
-                                    })}
+                                    {genders && genders.length > 0 &&
+                                        genders.map((item, index) => {
+                                            return (
+                                                <option key={index} value={item.keyMap}>
+                                                    {/* Check language để đổi EN-VI */}
+                                                    {language === LANGUAGES.VI ? item.valueVi : item.valueEn}
+                                                </option>
+                                            )
+                                        })
+                                    }
                                 </select>
                             </div>
 
                             <div className='col-3'>
                                 <lable><FormattedMessage id="manage-user.position" /></lable>
-                                <select className='form-control' value={position}
-                                    onChange={(event) => { this.onchangeInput(event, 'position') }}>
-                                    {positions && positions.length > 0 && positions.map((item, index) => {
-                                        return (
-                                            <option key={index} value={item.key}>
-                                                {language === LANGUAGES.VI ? item.valueVi : item.valueEn}
-                                            </option>
-                                        )
-                                    })}
+                                <select className='form-control'
+                                    onChange={(event) => { this.onchangeInput(event, 'position') }}
+                                    value={position}
+                                >
+                                    {positions && positions.length > 0
+                                        && positions.map((item, index) => {
+                                            return (
+                                                <option key={index} value={item.keyMap}>
+                                                    {language === LANGUAGES.VI ? item.valueVi : item.valueEn}
+                                                </option>
+                                            )
+                                        })
+                                    }
                                 </select>
                             </div>
 
                             <div className='col-3'>
                                 <lable><FormattedMessage id="manage-user.role" /></lable>
-                                <select className='form-control' value={role}
-                                    onChange={(event) => { this.onchangeInput(event, 'role') }}>
-                                    {roles && roles.length > 0 && roles.map((item, index) => {
-                                        return (
-                                            < option key={index} value={item.key} >
-                                                {language === LANGUAGES.VI ? item.valueVi : item.valueEn}
-                                            </option>
-                                        )
-                                    })}
-
-
+                                <select className='form-control'
+                                    onChange={(event) => { this.onchangeInput(event, 'role') }}
+                                    value={role}
+                                >
+                                    {roles && roles.length > 0
+                                        && roles.map((item, index) => {
+                                            return (
+                                                < option key={index} value={item.keyMap} >
+                                                    {language === LANGUAGES.VI ? item.valueVi : item.valueEn}
+                                                </option>
+                                            )
+                                        })
+                                    }
                                 </select>
                             </div>
 
@@ -336,11 +348,15 @@ class UserRedux extends Component {
                                 </div>
                             </div>
 
-                            <div className='col-3 mt-3'>
+                            <div className='col-12 my-3'>
                                 <button className={this.state.action === CRUD_ACTIONS.EDIT ? 'btn btn-warning' : 'btn btn-primary'}
                                     onClick={() => this.handleSaveUser()}>
 
-                                    {this.state.action === CRUD_ACTIONS.EDIT ? <FormattedMessage id="manage-user.edit" /> : <FormattedMessage id="manage-user.save" />}
+                                    {this.state.action === CRUD_ACTIONS.EDIT ?
+                                        <FormattedMessage id="manage-user.edit" />
+                                        :
+                                        <FormattedMessage id="manage-user.save" />
+                                    }
 
                                 </button>
 

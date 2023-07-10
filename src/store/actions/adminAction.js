@@ -1,5 +1,5 @@
 import actionTypes from './actionTypes';
-import { getAllCodeService, createNewUserService, getAllUsers, deleteUserService, editUserService } from '../../services/userService';
+import { getAllCodeService, createNewUserService, getAllUsers, deleteUserService, editUserService, getTopDoctorHomeService } from '../../services/userService';
 import { toast } from 'react-toastify';
 
 // ======================================================= ACTION GENDER
@@ -122,6 +122,7 @@ export const fetchAllUsersStart = () => {
         try {
 
             let res = await getAllUsers("ALL")
+
             if (res && res.errCode === 0) {
 
                 dispatch(fetchAllUsersSuccess(res.users.reverse()))
@@ -209,5 +210,32 @@ export const EditUserSuccess = () => ({
 export const EditUserFailed = () => ({
     type: actionTypes.EDIT_USERS_FAILED
 })
+
+
+
+// ======================================================= SHOW TOP DOCTOR
+export const fetchTopDoctor = () => {
+    return async (dispatch, getState) => {
+        try {
+            let res = await getTopDoctorHomeService('5') // lấy danh sách top doctor
+            if (res && res.errCode === 0) {
+                dispatch({
+                    type: actionTypes.FETCH_TOP_DOCTORS_SUCCESS,
+                    dataDoctors: res.data, //lưu biến data từ api vào redux 
+                })
+            }
+            else {
+                dispatch({
+                    type: actionTypes.FETCH_TOP_DOCTORS_FAILED,
+                })
+            }
+        } catch (e) {
+            console.log(e)
+            dispatch({
+                type: actionTypes.FETCH_TOP_DOCTORS_FAILED,
+            })
+        }
+    }
+}
 
 
