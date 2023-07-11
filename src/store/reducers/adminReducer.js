@@ -7,7 +7,8 @@ const initialState = { //khai báo biến khởi tạo
     isLoadingGender: false,
     users: [],
 
-    topDoctor: []
+    topDoctor: [],
+    allDoctors: [],
 }
 
 
@@ -83,6 +84,22 @@ const adminReducer = (state = initialState, action) => {
             return {
                 ...state
             }
+
+        case actionTypes.FETCH_ALL_DOCTORS_SUCCESS:
+            state.allDoctors = action.dataDr
+            return {
+                ...state
+            }
+
+        case actionTypes.FETCH_ALL_DOCTORS_FAILED:
+            state.allDoctors = []
+            return {
+                ...state
+            }
+
+
+
+
         default:
             return state;
     }
