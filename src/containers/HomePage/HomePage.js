@@ -17,13 +17,18 @@ import "slick-carousel/slick/slick-theme.css";
 
 class HomePage extends Component {
 
+    // handleAfterChange = (index, dontAnimate) => {
+    //     console.log('checl slide:', index)
+    // }
+
     render() {
         let settings = { //cấu hình slide
             dots: false,
-            infinite: true,
+            infinite: false,
             speed: 500,
             slidesToShow: 4, //4 slide hiện 
             slidesToScroll: 1, // 1 slide khi trượt 
+            // slickGoTo: this.handleAfterChange
         };
 
         return (

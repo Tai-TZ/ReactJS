@@ -6,6 +6,7 @@ import Slider from 'react-slick';
 
 import * as actions from '../../../store/actions'
 import { LANGUAGES } from '../../../utils'
+import { FormattedMessage } from 'react-intl';
 
 class OutStandingDoctor extends Component {
     constructor(props) {
@@ -36,8 +37,8 @@ class OutStandingDoctor extends Component {
             <div className='section-share section-outstanding-doctor'>
                 <div className='section-container'>
                     <div className='section-header'>
-                        <span className="title-section">Bác sĩ nỗi bật tuần qua</span>
-                        <button className='btn-section'>Xem thêm</button>
+                        <span className="title-section">< FormattedMessage id="homepage.outstanding-doctor" /></span>
+                        <button className='btn-section'><FormattedMessage id="homepage.more-information" /></button>
                     </div>
 
                     <div className='section-body'>
