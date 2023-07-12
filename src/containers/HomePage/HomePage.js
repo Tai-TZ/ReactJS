@@ -33,7 +33,7 @@ class HomePage extends Component {
 
         return (
             <div>
-                <HomeHeader />
+                <HomeHeader isShowBanner={true} />   {/*truyền props để ẩn banner bên trang detail  */}
                 <Specialty settings={settings} />{/* truyền biến settings sang compo con  */}
                 <MedicalFacility settings={settings} />{/* truyền biến settings sang compo con  */}
                 < OutstandingDoctor settings={settings} />
