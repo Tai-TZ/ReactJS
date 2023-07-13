@@ -1,4 +1,6 @@
 //render động các menu theo quyền người dùng
+
+//menu của phía admin 
 export const adminMenu = [
 
     { //quản lý người dùng 
@@ -8,13 +10,14 @@ export const adminMenu = [
             { name: 'menu.admin.crud-redux', link: '/system/user-redux' },
             {
                 name: 'menu.admin.manage-doctor', link: '/system/manage-doctor'
-                //     subMenus: [
-                //     { name: 'menu.system.system-administrator.user-manage', link: '/system/user-manage' },
-                //     { name: 'menu.system.system-administrator.user-redux', link: '/system/user-redux' },
-                // ]
+
             },
 
-            { name: 'menu.admin.manage-admin', link: '/system/user-admin' },
+
+
+            { //quản lý kế hoạch khám bệnh của doctor
+                name: 'menu.doctor.manage-schedule', link: '/doctor/manage-schedule'
+            },
 
         ]
     },
@@ -39,4 +42,23 @@ export const adminMenu = [
             { name: 'menu.admin.manage-handbook', link: '/system/manage-handbook' }
         ]
     },
+
+
+
+];
+
+
+
+
+// phân quyền menu của phía doctor 
+export const doctorMenu = [
+
+    {
+        name: 'menu.admin.manage-user',
+        menus: [
+            //quản lý kế hoạch khám bệnh của doctor
+            { name: 'menu.doctor.manage-schedule', link: '/doctor/manage-schedule' },
+
+        ]
+    }
 ];
