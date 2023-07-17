@@ -40,11 +40,11 @@ class Login extends Component {
             errMessage: ''
         })
 
-        try { 
+        try {
             let data = await handleLoginApi(this.state.username, this.state.password)
             console.log(data);
             if (data && data.errCode !== 0) { // case check remaining error: các lỗi còn lại
-                this.setState({  
+                this.setState({
                     errMessage: data.message
                 })
             }
@@ -74,7 +74,12 @@ class Login extends Component {
     }
 
 
-
+    //press enter  
+    handleKeyDown = (event) => {
+        if (event.key === 'Enter' || event.keyCode === 13) { //or keycode = 13 
+            this.handleLogin()
+        }
+    }
     render() { //JSX
         return (
             <div className='login-background'>
@@ -97,7 +102,10 @@ class Login extends Component {
                             <div className='custom-input-password'>
                                 <input className='form-control' placeholder='Enter your password'
                                     type={this.state.isShowPassword ? 'text' : 'password'}
-                                    onChange={(event) => { this.handleOnChangePassWord(event) }} />
+                                    onChange={(event) => { this.handleOnChangePassWord(event) }}
+                                    onKeyDown={(event) => this.handleKeyDown(event)}
+                                />
+
                                 <span onClick={() => { this.handleShowHidePassword() }}>
                                     <i className={this.state.isShowPassword ? "far fa-eye" : "fas fa-eye-slash"}></i>
                                 </span>
@@ -148,7 +156,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         navigate: (path) => dispatch(push(path)),
-    //    userLoginFail: () => dispatch(actions.adminLoginFail()),
+        //    userLoginFail: () => dispatch(actions.adminLoginFail()),
         userLoginSuccess: (userInfo) => dispatch(actions.userLoginSuccess(userInfo))
     };
 };
