@@ -10,6 +10,8 @@ const initialState = { //khai báo biến khởi tạo
     topDoctor: [],
     allDoctors: [],
     allScheduleTime: [],
+
+    allRequiredDoctorInfor: [],
 }
 
 
@@ -109,6 +111,23 @@ const adminReducer = (state = initialState, action) => {
             return {
                 ...state
             }
+
+
+        // ============================================== GET DOCTOR PRICE, PAYMENT AND PROVINCE
+        case actionTypes.FETCH_REQUIRED_DOCTOR_INFOR_SUCCESS:
+            state.allRequiredDoctorInfor = action.data
+            return {
+                ...state
+            }
+
+        case actionTypes.FETCH_REQUIRED_DOCTOR_INFOR_FAILED:
+            state.allRequiredDoctorInfor = []
+            return {
+                ...state
+            }
+
+
+
 
 
         default:
