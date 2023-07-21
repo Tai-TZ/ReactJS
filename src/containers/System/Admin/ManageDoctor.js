@@ -167,7 +167,7 @@ class ManageDoctor extends Component {
 
             selectedPrice: this.state.selectedPrice.value,
             selectedPayment: this.state.selectedPayment.value,
-            selectedProvince: this.state.selectedPrice.value,
+            selectedProvince: this.state.selectedProvince.value,
             nameClinic: this.state.nameClinic,
             addressClinic: this.state.addressClinic,
             note: this.state.note,
@@ -180,21 +180,64 @@ class ManageDoctor extends Component {
     //select doctor
     handleChangeSelect = async (selectedOption) => { //thư viện react-select
         this.setState({ selectedOption }) //selectedOption có value(là id của doctor)
+
+        let { listPayment, listPrice, listProvince } = this.state
+
+
         let res = await getDetailInforDoctor(selectedOption.value) //selectedOption.value = id doctor
         if (res && res.errCode === 0 && res.data && res.data.Markdown) {
             let markdown = res.data.Markdown
+            let addressClinic = '', nameClinic = '', note = '', paymentId = '', priceId = '', provinceId = '',
+                selectedPayment = '', selectedPrice = '', selectedProvince = ''
+
+            if (res.data.Doctor_Infor) {
+
+                addressClinic = res.data.Doctor_Infor.addressClinic
+                nameClinic = res.data.Doctor_Infor.nameClinic
+                note = res.data.Doctor_Infor.note
+                paymentId = res.data.Doctor_Infor.paymentId
+                priceId = res.data.Doctor_Infor.priceId
+                provinceId = res.data.Doctor_Infor.provinceId
+
+
+                //dùng find để tìm và gán state để lôi lên cli
+                selectedPayment = listPayment.find(item => {
+                    return item && item.value === paymentId
+                })
+
+                selectedPrice = listPrice.find(item => {
+                    return item && item.value === priceId
+                })
+
+                selectedProvince = listProvince.find(item => {
+                    return item && item.value === provinceId
+                })
+
+
+            }
+
             this.setState({
                 contentHTML: markdown.contentHTML,
                 contentMarkdown: markdown.contentMarkdown,
                 description: markdown.description,
-                hasOldData: true // phụ thuộc có thông tin ? class save : class create
+                hasOldData: true, // phụ thuộc có thông tin ? class save : class create
+                addressClinic: addressClinic,
+                nameClinic: nameClinic,
+                note: note,
+                selectedPayment: selectedPayment,
+                selectedPrice: selectedPrice,
+                selectedProvince: selectedProvince
+
             })
-        } else {
+        } else { //nếu doctor k có markdown thì clear cái ô field
             this.setState({
                 contentHTML: '',
                 contentMarkdown: '',
                 description: '',
-                hasOldData: false
+                hasOldData: false,
+                addressClinic: '',
+                nameClinic: '',
+                note: ''
             })
         }
 
