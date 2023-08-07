@@ -63,19 +63,33 @@ const getDetailInforDoctor = (inputId) => {
 
 //lưu nhiều bản ghi bằng 1 lệnh
 const saveBulkScheduleDoctor = (data) => {
+    console.log(data)
     return axios.post(`/api/bulk-create-schedule`, data)
 }
 
+
+//lấy lịch qua date
 const getScheduleDoctorByDate = (doctorId, date) => {
     return axios.get(`/api/get-schedule-doctor-by-date?doctorId=${doctorId}&date=${date}`)
 }
 
-
+//lấy infor extra qua id
 const getExtraInforDoctorById = (doctorId) => {
     return axios.get(`/api/get-extra-infor-doctor-by-id?doctorId=${doctorId}`)
 }
 
 
+//lấy profile qua id
+const getProfileDoctorById = (doctorId) => {
+    return axios.get(`/api/get-profile-doctor-by-id?doctorId=${doctorId}`)
+}
+
+
+
+//api save patien
+const postPatientBookingAppointment = (data) => {
+    return axios.post(`/api/patient-book-appointment`, data)
+}
 
 
 
@@ -83,5 +97,5 @@ export {
     handleLoginApi, getAllUsers, createNewUserService, deleteUserService,
     editUserService, getAllCodeService, getTopDoctorHomeService, getAllDoctors,
     saveDetailDoctorService, getDetailInforDoctor, saveBulkScheduleDoctor, getScheduleDoctorByDate,
-    getExtraInforDoctorById
+    getExtraInforDoctorById, getProfileDoctorById, postPatientBookingAppointment
 }  

@@ -154,6 +154,9 @@ class ManageSchedule extends Component {
             doctorId: selectedDoctor.value,
             formatedDate: formatedDate
         })
+
+        console.log('res saveBulkScheduleDoctor ', res)
+
         if (res && res.errCode === 0) {
             toast.success('Save  Info success!!')
         } else {
@@ -195,7 +198,6 @@ class ManageSchedule extends Component {
                                 minDate={yesterday}
                             />
                         </div>
-
                         <div className='col-12 pick-hour-container'>
                             {rangeTime && rangeTime.length > 0 &&
                                 rangeTime.map((item, index) => {

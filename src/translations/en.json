@@ -85,6 +85,22 @@
             "detail": "View detail",
             "payment": "The patient can pay the cost in the form of: ",
             "hide-price": "Hide price"
+        },
+
+        "booking-modal": {
+            "title": "Information to order medical examination",
+            "fullName": "Full Name",
+            "phoneNumber": "Phone Number",
+            "email":"Email",
+            "address": "Address",
+            "reason":"Reason for examination",
+            "birthday": "Date of Birth",
+            "genders": "Sex",
+            "btnConfirm": "Confirm",
+            "btnCancel": "Cancel",
+            "priceBooking": "Free Booking",
+            "price": "Price: "
+
         }
     },
     "admin":{
