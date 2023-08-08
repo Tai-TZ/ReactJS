@@ -11,7 +11,7 @@ import { LANGUAGES } from '../../../../utils';
 import Select from 'react-select';
 import { postPatientBookingAppointment } from '../../../../services/userService';
 import { toast } from 'react-toastify';
-
+import moment from 'moment';
 
 
 class BookingModal extends Component {
@@ -103,11 +103,56 @@ class BookingModal extends Component {
         this.setState({ selectedGender: selectedOption })
     }
 
+    //viet hoa chu cai dau
+    capitalizeFirstLetter(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    }
+
+    //config dạng time cho Vi - En
+    buildTimeBooking = (dataTime) => {
+        let { language } = this.props
+        if (dataTime && !_.isEmpty(dataTime)) {
+            //show time booking schedule
+            let time = language === LANGUAGES.VI ? dataTime.timeTypeData.valueVi : dataTime.timeTypeData.valueEn
+
+            // show date: convert từ string trong db sang date của js (VI - EN)
+            let date = language === LANGUAGES.VI ?
+                moment.unix(+dataTime.date / 1000).format('dddd - DD/MM/YYYY')
+                :
+                moment.unix(+dataTime.date / 1000).locale('en').format('ddd - MM/DD/YYYY')
+            let Date = this.capitalizeFirstLetter(date)
+            return `${time} - ${Date}`
+
+        }
+        return ''
+    }
+
+    //hiển thị tên theo ngôn ngữ
+    buildDoctorName = (dataTime) => {
+        let { language } = this.props
+        if (dataTime && !_.isEmpty(dataTime)) {
+
+            let name = language === LANGUAGES.VI ?
+                `${dataTime.doctorData.lastName} ${dataTime.doctorData.firstName}`
+                :
+                `${dataTime.doctorData.firstName} ${dataTime.doctorData.lastName}`
+            return name
+
+        }
+        return ''
+    }
+
+
 
     // xử lý btn confirm lưu các thông tin trong input vào db
     handleConfirmBooking = async () => {
         //valid input
         let date = new Date(this.state.birthday).getTime() // convert chuỗi string dưới dạng timestamp unix để lưu vào db
+        let timeString = this.buildTimeBooking(this.props.dataTime) // lấy để lưu về nodejs để gửi mail
+        let doctorName = this.buildDoctorName(this.props.dataTime)// lấy để lưu về nodejs để gửi mail
+
+
+
         let res = await postPatientBookingAppointment({
             fullName: this.state.fullName,
             phoneNumber: this.state.phoneNumber,
@@ -117,7 +162,10 @@ class BookingModal extends Component {
             date: date,
             selectedGender: this.state.selectedGender.value,
             doctorId: this.state.doctorId,
-            timeType: this.state.timeType
+            timeType: this.state.timeType,
+            language: this.props.language,
+            timeString: timeString,
+            doctorName: doctorName,
         })
 
         if (res && res.errCode === 0) {
@@ -131,7 +179,6 @@ class BookingModal extends Component {
     render() {
         let { isOpendModal, closeBookingModal, dataTime } = this.props; //lấy dữ liệu đc truyền từ DoctorSchedule qua props
         let doctorId = dataTime && !_.isEmpty(dataTime) ? dataTime.doctorId : ''
-        let yesterday = new Date(new Date().setDate(new Date().getDate() - 1));
 
 
 
