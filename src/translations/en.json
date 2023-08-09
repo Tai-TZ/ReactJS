@@ -63,7 +63,10 @@
 
     "homepage":{
         "outstanding-doctor": "Outstanding Doctor of the Week",
-        "more-information": "More information"
+        "more-information": "More information",
+        "specialty-popular": "Popular specialties",
+        "more-infor": "More information"
+
     },
 
     "manage-schedule":{
