@@ -6,6 +6,10 @@ import UserRedux from '../containers/System/Admin/UserRedux';
 
 import Header from '../containers/Header/Header';
 import ManageDoctor from '../containers/System/Admin/ManageDoctor';
+import ManageSpecialty from '../containers/System/Specialty/ManageSpecialty';
+
+
+
 class System extends Component {
     render() {
 
@@ -21,8 +25,9 @@ class System extends Component {
                             <Route path="/system/user-manage" component={UserManage} />
                             <Route path="/system/user-redux" component={UserRedux} />
                             <Route path="/system/manage-doctor" component={ManageDoctor} />
+                            <Route path="/system/manage-specialty" component={ManageSpecialty} /> {/*Chuyên khoa*/}
 
-                            <Route component={() => { return (<Redirect to={systemMenuPath} />) }} />
+                            <Route component={() => { return (<Redirect to={systemMenuPath} />) }} /> {/* Link default khi vào web http://localhost:3000/system/ */}
                         </Switch>
                     </div>
                 </div>
