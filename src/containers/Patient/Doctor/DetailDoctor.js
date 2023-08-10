@@ -18,13 +18,14 @@ class DetailDoctor extends Component {
     }
 
     async componentDidMount() {
+        //lấy id trên url
         if (this.props.match && this.props.match.params && this.props.match.params.id) {
             let id = this.props.match.params.id
 
             this.setState({
                 currentDoctorId: id,
             })
-            let res = await getDetailInforDoctor(id)
+            let res = await getDetailInforDoctor(id) //gọi api
             if (res && res.errCode === 0) {
                 this.setState({
                     detailDoctor: res.data,

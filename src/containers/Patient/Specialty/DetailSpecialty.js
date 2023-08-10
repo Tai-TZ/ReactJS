@@ -6,19 +6,54 @@ import HomeHeader from '../../HomePage/Header/HomeHeader';
 import DoctorSchedule from '../Doctor/DoctorSchedule';
 import DoctorExtraInfor from '../Doctor/DoctorExtraInfor';
 import ProfileDoctor from '../Doctor/ProfileDoctor';
-
-
+import { getDetailSpecialtyById, getAllCodeService } from '../../../services/userService';
+import _ from 'lodash';
+import { LANGUAGES } from '../../../utils';
 
 class DetailSpecialty extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            arrDoctorId: [85, 92, 94]
+            arrDoctorId: [],
+            dataDetailSpecialty: {},
+            listProvinces: [],
         }
     }
 
     async componentDidMount() {
+        //lấy id trên url
+        if (this.props.match && this.props.match.params && this.props.match.params.id) {
+            let id = this.props.match.params.id
 
+            let res = await getDetailSpecialtyById({//gọi api
+                id: id,
+                location: 'ALL'
+            })
+
+            let resProvince = await getAllCodeService('PROVINCE') //lôi allcode PROVINCE lên làm select
+            console.log('PROVINCE: ', resProvince.data)
+            if (res && res.errCode === 0 && resProvince && resProvince.errCode === 0) {
+                let data = res.data;
+                let arrDoctorId = []
+
+                if (data && !_.isEmpty(data)) {
+                    let arr = data.doctorSpecialty //bác sĩ tại khoa đó
+                    if (arr && arr.length > 0) {
+                        arr.map(item => {
+                            arrDoctorId.push(item.doctorId); //đẩy doctorId vào mảng arrDoctorId để load động ra cli
+                        })
+
+                    }
+
+                }
+
+                this.setState({ //đẩy data từ api vào state
+                    dataDetailSpecialty: res.data,
+                    arrDoctorId: arrDoctorId,
+                    listProvinces: resProvince.data
+                })
+            }
+        }
 
     }
 
@@ -30,9 +65,15 @@ class DetailSpecialty extends Component {
     }
 
 
+    handleOnChangeSelect = (event) => {
+        console.log('check onchange select', event.target.value)
+    }
+
 
     render() {
-        let { arrDoctorId } = this.state
+        let { arrDoctorId, dataDetailSpecialty, listProvinces } = this.state
+        let { language } = this.props
+        console.log('check state', this.state)
         return (
             <div className='detail-specialty-container'>
                 <HomeHeader />
@@ -40,7 +81,27 @@ class DetailSpecialty extends Component {
 
                 <div className='detail-specialt-body'>
                     <div className='desciption-specialty'>
+                        {dataDetailSpecialty && !_.isEmpty(dataDetailSpecialty) //tồn tại và ko rỗng
+                            &&
+                            <div dangerouslySetInnerHTML={{ __html: dataDetailSpecialty.descriptionHTML }}>
+                                {/* sử dụng  dangerouslySetInnerHTML fix lỗi ko nhận html mà chỉ nhận text *{detailDoctor.Markdown.contentHTML}*/}
+                            </div>
+                        }
+                    </div>
 
+                    <div className='search-sp-doctor'>
+                        <select onChange={(event) => { this.handleOnChangeSelect(event) }}>
+                            {listProvinces && listProvinces.length > 0 &&
+                                listProvinces.map((item, index) => {
+                                    return (
+                                        // keyMap = id của province
+                                        <option key={index} value={item.keyMap}>
+                                            {language === LANGUAGES.VI ? item.valueVi : item.valueEn}
+                                        </option>
+                                    )
+                                })
+                            }
+                        </select>
                     </div>
 
                     {

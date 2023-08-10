@@ -126,7 +126,7 @@ class ManageDoctor extends Component {
         }
 
 
-        // đẩy option selected price, payment, province
+        // đẩy option selected price, payment, province,SPECIALTY
         if (prevProps.allRequiredDoctorInfor !== this.props.allRequiredDoctorInfor) {
             // console.log('get data from redux:', this.props.allRequiredDoctorInfor)
             let { resPrice, resPayment, resProvince, resSpecialty } = this.props.allRequiredDoctorInfor
@@ -204,30 +204,31 @@ class ManageDoctor extends Component {
     }
 
 
-    //select doctor
+    //select doctor, hàm load thông tin của doctor khi chọn doctor trên select
     handleChangeSelect = async (selectedOption) => { //thư viện react-select
         this.setState({ selectedOption }) //selectedOption có value(là id của doctor)
 
-        let { listPayment, listPrice, listProvince, listClinic, listSpecialty } = this.state
+        let { listPayment, listPrice, listProvince, listSpecialty } = this.state
 
 
-        let res = await getDetailInforDoctor(selectedOption.value) //selectedOption.value = id doctor
+        let res = await getDetailInforDoctor(selectedOption.value) //selectedOption.value = id doctor 
+
         if (res && res.errCode === 0 && res.data && res.data.Markdown) {
             let markdown = res.data.Markdown
-            let addressClinic = '', nameClinic = '', note = '', paymentId = '', priceId = '', provinceId = '', clinicId = '', specialtyId = '',
-                selectedPayment = '', selectedPrice = '', selectedProvince = '', selectedClinic = '', selectedSpecialty = 0
+
+            let addressClinic = '', nameClinic = '', note = '', paymentId = '', priceId = '', provinceId = '', specialtyId = '',
+                selectedPayment = '', selectedPrice = '', selectedProvince = '', selectedSpecialty = '';
 
             if (res.data.Doctor_Infor) {
 
                 addressClinic = res.data.Doctor_Infor.addressClinic
                 nameClinic = res.data.Doctor_Infor.nameClinic
                 note = res.data.Doctor_Infor.note
-
                 paymentId = res.data.Doctor_Infor.paymentId
                 priceId = res.data.Doctor_Infor.priceId
                 provinceId = res.data.Doctor_Infor.provinceId
-                // clinicId = res.data.Doctor_Info.clinicId
-                // specialtyId = res.data.Doctor_Info.specialtyId
+
+                specialtyId = res.data.Doctor_Infor.specialtyId
 
 
                 //dùng find để tìm và gán state để lôi lên cli
@@ -243,17 +244,14 @@ class ManageDoctor extends Component {
                     return item && item.value === provinceId
                 })
 
-                // selectedClinic = listClinic.find(item => {
-                //     return item && item.value === clinicId
-                // })
-
-                // selectedSpecialty = listSpecialty.find(item => {
-                //     return item && item.value === specialtyId
-                // })
-
+                selectedSpecialty = listSpecialty.find(item => {
+                    return item && item.value === specialtyId
+                })
 
             }
 
+
+            //gán các giá trị từ doctor_infor vào state
             this.setState({
                 contentHTML: markdown.contentHTML,
                 contentMarkdown: markdown.contentMarkdown,
@@ -264,7 +262,8 @@ class ManageDoctor extends Component {
                 note: note,
                 selectedPayment: selectedPayment,
                 selectedPrice: selectedPrice,
-                selectedProvince: selectedProvince
+                selectedProvince: selectedProvince,
+                selectedSpecialty: selectedSpecialty
 
             })
         } else { //nếu doctor k có markdown thì clear cái ô field
@@ -275,7 +274,11 @@ class ManageDoctor extends Component {
                 hasOldData: false,
                 addressClinic: '',
                 nameClinic: '',
-                note: ''
+                note: '',
+                selectedPayment: '',
+                selectedPrice: '',
+                selectedProvince: '',
+                selectedSpecialty: '',
             })
         }
 
@@ -306,7 +309,7 @@ class ManageDoctor extends Component {
 
 
     render() {
-        let { hasOldData, listSpecialty } = this.state
+        let { hasOldData } = this.state
         return (
             <div className="manage-doctor-container">
                 <div className="manage-doctor-title"> <FormattedMessage id="admin.manage-doctor.title" /> </div>
