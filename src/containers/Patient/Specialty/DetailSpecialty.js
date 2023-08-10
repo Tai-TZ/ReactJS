@@ -3,7 +3,9 @@ import { connect } from "react-redux";
 import { FormattedMessage } from "react-intl";
 import './DetailSpecialty.scss';
 import HomeHeader from '../../HomePage/Header/HomeHeader';
-
+import DoctorSchedule from '../Doctor/DoctorSchedule';
+import DoctorExtraInfor from '../Doctor/DoctorExtraInfor';
+import ProfileDoctor from '../Doctor/ProfileDoctor';
 
 
 
@@ -11,7 +13,7 @@ class DetailSpecialty extends Component {
     constructor(props) {
         super(props);
         this.state = {
-
+            arrDoctorId: [85, 92, 94]
         }
     }
 
@@ -30,12 +32,52 @@ class DetailSpecialty extends Component {
 
 
     render() {
+        let { arrDoctorId } = this.state
         return (
-            <>
+            <div className='detail-specialty-container'>
                 <HomeHeader />
-                <div>DetailSpecialty</div>
 
-            </>
+
+                <div className='detail-specialt-body'>
+                    <div className='desciption-specialty'>
+
+                    </div>
+
+                    {
+                        arrDoctorId && arrDoctorId.length > 0 && arrDoctorId.map((item, index) => {
+                            return (
+                                <div className='each-doctor' key={index}>
+                                    <div className='dt-content-left'>
+                                        <div className='profile-doctor'>
+                                            <ProfileDoctor
+                                                doctorId={item}
+                                                isShowDescriptionDoctor={true}
+                                            // dataTime={dataTime}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className='dt-content-right'>
+                                        <div className='doctor-schedule'>
+
+                                            <DoctorSchedule // render ra các lịch khám của các bác sĩ
+                                                doctorIdFromParent={item}
+                                            />
+                                        </div>
+                                        <div className='doctor-extra-infor'>
+                                            <DoctorExtraInfor
+                                                doctorIdFromParent={item} //truyền qua component con
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+
+                            )
+                        })
+                    }
+
+
+                </div>
+            </div>
 
         )
     }
