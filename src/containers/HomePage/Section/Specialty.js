@@ -4,6 +4,7 @@ import { FormattedMessage } from 'react-intl';
 import './Specialty.scss';
 import Slider from 'react-slick';
 import { getAllSpecialty } from '../../../services/userService'
+import { withRouter } from 'react-router';
 
 
 class Specialty extends Component {
@@ -18,14 +19,25 @@ class Specialty extends Component {
     //hàm gọi 1 lần trc khi render
     async componentDidMount() {
         let res = await getAllSpecialty()
-        console.log('check res: ', res)
-        if (res && res.errCode === 0) {
+        if (res && res.errCode === 0) { // thư viện withRouter
             this.setState({
                 dataSpecialty: res.data ? res.data : []
             })
         }
     }
+
+
+
+    //view detail specialty
+    handleViewDetailSpecialty = (specialty) => {
+        // console.log('check view detail', doctor)
+        if (this.props.history) { //
+
+            this.props.history.push(`/detail-specialty/${specialty.id}`)
+        }
+    }
     render() {
+        console.log('check props: ', this.props)
         let { dataSpecialty } = this.state
         return (
             <div className='section-share section-specialty'>
@@ -40,7 +52,7 @@ class Specialty extends Component {
                             {dataSpecialty && dataSpecialty.length > 0 &&
                                 dataSpecialty.map((item, index) => {
                                     return (
-                                        <div className='section-customize specialty-child' key={index}>
+                                        <div className='section-customize specialty-child' key={index} onClick={() => this.handleViewDetailSpecialty(item)} >
                                             <div className="bg-img section-specialty"
                                                 style={{ backgroundImage: `url(${item.image})` }}
                                             />
@@ -55,7 +67,7 @@ class Specialty extends Component {
 
                         </Slider>
                     </div>
-                </div>
+                </div >
             </div >
         );
     }
@@ -83,4 +95,4 @@ const mapDispatchToProps = dispatch => {
 
 
 //kết nối REACT - REDUX from 'react-redux'
-export default connect(mapStateToProps, mapDispatchToProps)(Specialty);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Specialty));
