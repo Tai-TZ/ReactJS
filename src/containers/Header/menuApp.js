@@ -1,4 +1,5 @@
 //render động các menu theo quyền người dùng
+//system 
 
 //menu của phía admin 
 export const adminMenu = [

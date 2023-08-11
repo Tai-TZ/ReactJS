@@ -37,7 +37,7 @@ class Specialty extends Component {
         }
     }
     render() {
-        console.log('check props: ', this.props)
+        console.log('check state: ', this.state)
         let { dataSpecialty } = this.state
         return (
             <div className='section-share section-specialty'>
@@ -60,11 +60,7 @@ class Specialty extends Component {
                                         </div>
                                     )
                                 })
-
                             }
-
-
-
                         </Slider>
                     </div>
                 </div >
