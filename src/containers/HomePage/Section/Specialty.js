@@ -29,8 +29,8 @@ class Specialty extends Component {
 
 
     //view detail specialty
+    //bản chất single page của react nhấn sang page khác ko reload lại trang 
     handleViewDetailSpecialty = (specialty) => {
-        // console.log('check view detail', doctor)
         if (this.props.history) { //
 
             this.props.history.push(`/detail-specialty/${specialty.id}`)

@@ -1,14 +1,72 @@
 .detail-specialty-container {
 
-    .desciption-specialty {
-        border: 1px solid red;
+    .desciption {
+        padding         : 0 100px;
+        background-color: #fbfbfb !important;
+
+
+        .title1 {
+            font-size    : 16px;
+            font-weight  : bold;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size    : 14px;
+            font-weight  : bold;
+            margin-bottom: 10px;
+        }
+
+        .doctor-list {
+            list-style-type: disc;
+            margin-left    : 20px;
+        }
+
+        .doctor-list-item {
+            margin-bottom: 5px;
+        }
+
+        .moreInfor {
+            cursor: pointer;
+            color : rgb(38, 160, 231);
+        }
+
+
+
+        .desciption-specialty {
+
+
+            padding: 15px 0;
+
+            h1,
+            h2,
+            h3 {
+                font-size  : 16px;
+                font-weight: 600;
+            }
+        }
     }
 
     .detail-specialt-body {
-        margin: 0 100px;
+        padding         : 0 100px;
+        background-color: #eee;
+        display         : flex;
+        flex-direction  : column;
     }
 
-    .search-sp-doctor {}
+    .search-sp-doctor {
+
+        select {
+            height       : 30px;
+            padding      : 5px 8px;
+            border       : none;
+            outline      : none;
+            border-radius: 3px;
+            margin-top   : 20px;
+            cursor       : pointer;
+        }
+
+    }
 
     .each-doctor {
         display   : flex;
@@ -24,6 +82,13 @@
         .dt-content-left {
             width       : 50%;
             border-right: 1px solid #ddd;
+
+            .profile-doctor-container {
+                .down {
+                    padding: 10px;
+
+                }
+            }
         }
 
         .dt-content-right {
@@ -47,6 +112,8 @@
                     padding-left: 0 !important;
                 }
             }
+
+
         }
     }
 }

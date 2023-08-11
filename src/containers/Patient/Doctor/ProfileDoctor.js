@@ -7,6 +7,8 @@ import { LANGUAGES } from '../../../utils';
 import NumberFormat from 'react-number-format';
 import _ from 'lodash';
 import moment from 'moment';
+import { Link } from 'react-router-dom';
+
 
 class ProfileDoctor extends Component {
     constructor(props) {
@@ -84,12 +86,11 @@ class ProfileDoctor extends Component {
     }
 
 
+
     render() {
-        // console.log('check state modal', this.state)
-        // console.log('check props modal', this.props)
 
         let { dataProfile } = this.state
-        let { language, isShowDescriptionDoctor, dataTime } = this.props
+        let { language, isShowDescriptionDoctor, dataTime, isShowLinkDetail, isShowPrice, doctorId } = this.props
 
         let nameVi = '', nameEn = ''
         if (dataProfile && dataProfile.positionData) {
@@ -122,27 +123,40 @@ class ProfileDoctor extends Component {
                         </div>
                     </div>
                 </div>
-                <div className='price'>
-                    <FormattedMessage id="patient.booking-modal.price" />
-                    {/* language VI */}
-                    {dataProfile && dataProfile.Doctor_Infor && language === LANGUAGES.VI
-                        &&
-                        // format money VI
-                        <NumberFormat className='currency'
-                            value={dataProfile.Doctor_Infor.priceTypeData.valueVi}
-                            displayType='text'
-                            thousandSeparator={true} suffix=' VNĐ' />
-                    }
-                    {/* language EN */}
-                    {dataProfile && dataProfile.Doctor_Infor && language === LANGUAGES.EN
-                        &&
-                        // format money EN
-                        < NumberFormat className='currency'
-                            value={dataProfile.Doctor_Infor.priceTypeData.valueEn}
-                            displayType='text'
-                            thousandSeparator={true} suffix=' $' />
-                    }
-                </div>
+
+
+                {/* show link detail doctor */}
+                {/* bản chất single page của page nhấn sang page khác ko reload lại trang  */}
+                {isShowLinkDetail === true &&
+                    <Link className="nav-link" to={`/detail-doctor/${doctorId}`}> Xem thêm thông tin bác sĩ</Link>
+                }
+
+
+                {/* show giá */}
+                {isShowPrice === true &&
+                    <div className='price'>
+
+                        <FormattedMessage id="patient.booking-modal.price" />
+                        {/* language VI */}
+                        {dataProfile && dataProfile.Doctor_Infor && language === LANGUAGES.VI
+                            &&
+                            // format money VI
+                            <NumberFormat className='currency'
+                                value={dataProfile.Doctor_Infor.priceTypeData.valueVi}
+                                displayType='text'
+                                thousandSeparator={true} suffix=' VNĐ' />
+                        }
+                        {/* language EN */}
+                        {dataProfile && dataProfile.Doctor_Infor && language === LANGUAGES.EN
+                            &&
+                            // format money EN
+                            < NumberFormat className='currency'
+                                value={dataProfile.Doctor_Infor.priceTypeData.valueEn}
+                                displayType='text'
+                                thousandSeparator={true} suffix=' $' />
+                        }
+                    </div>
+                }
             </div >
         )
     }
