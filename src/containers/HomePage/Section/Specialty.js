@@ -19,7 +19,7 @@ class Specialty extends Component {
     //hàm gọi 1 lần trc khi render
     async componentDidMount() {
         let res = await getAllSpecialty()
-        if (res && res.errCode === 0) { // thư viện withRouter
+        if (res && res.errCode === 0) {
             this.setState({
                 dataSpecialty: res.data ? res.data : []
             })
@@ -32,12 +32,10 @@ class Specialty extends Component {
     //bản chất single page của react nhấn sang page khác ko reload lại trang 
     handleViewDetailSpecialty = (specialty) => {
         if (this.props.history) { //
-
             this.props.history.push(`/detail-specialty/${specialty.id}`)
         }
     }
     render() {
-        console.log('check state: ', this.state)
         let { dataSpecialty } = this.state
         return (
             <div className='section-share section-specialty'>

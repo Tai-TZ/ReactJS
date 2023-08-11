@@ -1,0 +1,119 @@
+.detail-specialty-container {
+
+    .desciption {
+        padding         : 0 100px;
+        background-color: #fbfbfb !important;
+
+
+        .title1 {
+            font-size    : 16px;
+            font-weight  : bold;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size    : 14px;
+            font-weight  : bold;
+            margin-bottom: 10px;
+        }
+
+        .doctor-list {
+            list-style-type: disc;
+            margin-left    : 20px;
+        }
+
+        .doctor-list-item {
+            margin-bottom: 5px;
+        }
+
+        .moreInfor {
+            cursor: pointer;
+            color : rgb(38, 160, 231);
+        }
+
+
+
+        .desciption-specialty {
+
+
+            padding: 15px 0;
+
+            h1,
+            h2,
+            h3 {
+                font-size  : 16px;
+                font-weight: 600;
+            }
+        }
+    }
+
+    .detail-specialt-body {
+        padding         : 0 100px;
+        background-color: #eee;
+        display         : flex;
+        flex-direction  : column;
+    }
+
+    .search-sp-doctor {
+
+        select {
+            height       : 30px;
+            padding      : 5px 8px;
+            border       : none;
+            outline      : none;
+            border-radius: 3px;
+            margin-top   : 20px;
+            cursor       : pointer;
+        }
+
+    }
+
+    .each-doctor {
+        display   : flex;
+        width     : 100%;
+        min-height: 300px;
+        margin    : 15px 0;
+        padding   : 10px;
+
+        background-color: #fff;
+        box-shadow      : 0 1px 6px #20212447;
+        border-radius   : 8px;
+
+        .dt-content-left {
+            width       : 50%;
+            border-right: 1px solid #ddd;
+
+            .profile-doctor-container {
+                .down {
+                    padding: 10px;
+
+                }
+            }
+        }
+
+        .dt-content-right {
+            width: 50%;
+
+            padding: 5px;
+
+            .doctor-schedule {
+                .doctor-schedule-container {
+
+                    border-right: unset !important;
+                }
+            }
+
+            .doctor-extra-infor {
+                border-top : 1px solid #ddd;
+                margin-top : 10px;
+                padding-top: 10px;
+
+                .doctor-extra-infor-container {
+                    padding-left: 0 !important;
+                }
+            }
+
+
+        }
+    }
+}
