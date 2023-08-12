@@ -16,6 +16,7 @@
                 width          : 100%;
             }
 
+
             td,
             th {
                 border    : 1px solid #dddddd;
@@ -26,6 +27,36 @@
             tr:nth-child(even) {
                 background-color: #eee;
             }
+
+            .no-data {
+                td {
+                    text-align: center;
+                    border    : none;
+                    padding   : 10px;
+                }
+            }
+
+
+            button {
+                border : none;
+                outline: none;
+                cursor : pointer;
+            }
+
+            .mp-btn-confirm {
+                margin-right : 10px;
+                height       : 30px;
+                border-radius: 3px;
+                background   : orange;
+            }
+
+            .mp-btn-remedy {
+
+                height       : 30px;
+                border-radius: 3px;
+                background   : #39dca0;
+            }
+
         }
     }
 }
